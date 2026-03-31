@@ -1,5 +1,8 @@
 # Angular Accessibility Reference
 
+> **Covers:** Angular 17–19, @angular/cdk 17+ | **Last verified:** 2026-03-31
+> **Sources:** [Angular CDK A11y docs](https://material.angular.io/cdk/a11y/overview), [angular-eslint](https://github.com/angular-eslint/angular-eslint)
+
 ## Angular CDK A11y Module (`@angular/cdk/a11y`)
 
 ### FocusTrap

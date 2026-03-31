@@ -1,0 +1,82 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.4",
+  "serialNumber": "urn:uuid:a11y-audit-skill-2026-03-31",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-03-31T00:00:00Z",
+    "tools": [
+      {
+        "vendor": "Claude",
+        "name": "accessibility-audit-skill",
+        "version": "1.0.0"
+      }
+    ],
+    "component": {
+      "type": "application",
+      "name": "accessibility-audit-skill",
+      "version": "1.0.0",
+      "description": "WCAG 2.2 accessibility audit skill for Claude",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "author": "Justice",
+      "purl": "pkg:github/justice8096/accessibility-audit-skill@1.0.0"
+    }
+  },
+  "components": [
+    {
+      "type": "data",
+      "name": "SKILL.md",
+      "version": "1.0.0",
+      "description": "Main skill file — audit template, execution process, severity classification",
+      "scope": "required"
+    },
+    {
+      "type": "data",
+      "name": "references/angular-a11y.md",
+      "version": "1.0.0",
+      "description": "Angular CDK A11y reference — FocusTrap, FocusMonitor, LiveAnnouncer, common failures",
+      "scope": "optional"
+    },
+    {
+      "type": "data",
+      "name": "references/react-a11y.md",
+      "version": "1.0.0",
+      "description": "React Aria, Radix UI, shadcn/ui reference — hooks, SPA focus management, jest-axe",
+      "scope": "optional"
+    },
+    {
+      "type": "data",
+      "name": "evals/evals.json",
+      "version": "1.0.0",
+      "description": "3 eval test cases with 34 assertions for skill validation",
+      "scope": "optional"
+    }
+  ],
+  "dependencies": [],
+  "externalReferences": [
+    {
+      "type": "website",
+      "url": "https://github.com/justice8096/accessibility-audit-skill"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/justice8096/accessibility-audit-skill.git"
+    },
+    {
+      "type": "documentation",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "comment": "WCAG 2.2 W3C Recommendation (Oct 2023)"
+    },
+    {
+      "type": "documentation",
+      "url": "https://www.w3.org/WAI/ARIA/apg/",
+      "comment": "WAI-ARIA Authoring Practices Guide"
+    }
+  ]
+}

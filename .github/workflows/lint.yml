@@ -1,0 +1,61 @@
+name: Lint & Validate
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate markdown structure
+        run: |
+          echo "Checking required files exist..."
+          test -f SKILL.md || (echo "SKILL.md missing" && exit 1)
+          test -f README.md || (echo "README.md missing" && exit 1)
+          test -f LICENSE || (echo "LICENSE missing" && exit 1)
+          test -f SECURITY.md || (echo "SECURITY.md missing" && exit 1)
+          test -f sbom.cdx.json || (echo "SBOM missing" && exit 1)
+          test -f references/angular-a11y.md || (echo "Angular reference missing" && exit 1)
+          test -f references/react-a11y.md || (echo "React reference missing" && exit 1)
+          test -f evals/evals.json || (echo "Evals missing" && exit 1)
+          echo "All required files present."
+
+      - name: Validate SKILL.md frontmatter
+        run: |
+          echo "Checking SKILL.md has required frontmatter..."
+          head -1 SKILL.md | grep -q "^---" || (echo "Missing frontmatter delimiter" && exit 1)
+          grep -q "^name:" SKILL.md || (echo "Missing name field" && exit 1)
+          grep -q "^description:" SKILL.md || (echo "Missing description field" && exit 1)
+          echo "Frontmatter valid."
+
+      - name: Validate evals JSON
+        run: |
+          echo "Checking evals.json is valid JSON..."
+          python3 -c "import json; json.load(open('evals/evals.json'))" || (echo "Invalid JSON" && exit 1)
+          echo "evals.json is valid."
+
+      - name: Validate SBOM JSON
+        run: |
+          echo "Checking sbom.cdx.json is valid CycloneDX..."
+          python3 -c "
+          import json
+          sbom = json.load(open('sbom.cdx.json'))
+          assert sbom['bomFormat'] == 'CycloneDX', 'Not CycloneDX format'
+          assert 'specVersion' in sbom, 'Missing specVersion'
+          assert 'metadata' in sbom, 'Missing metadata'
+          print('SBOM valid: CycloneDX', sbom['specVersion'])
+          "
+
+      - name: Check for secrets
+        run: |
+          echo "Scanning for potential secrets..."
+          if grep -rn "sk-\|AKIA\|ghp_\|glpat-\|password\s*=" --include="*.md" --include="*.json" .; then
+            echo "Potential secret found!"
+            exit 1
+          fi
+          echo "No secrets detected."

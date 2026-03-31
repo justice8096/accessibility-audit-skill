@@ -1,5 +1,8 @@
 # React Accessibility Reference
 
+> **Covers:** React 18–19, React Aria 3.x, Radix UI 1.x, shadcn/ui | **Last verified:** 2026-03-31
+> **Sources:** [React Aria docs](https://react-spectrum.adobe.com/react-aria/), [Radix UI](https://www.radix-ui.com/), [eslint-plugin-jsx-a11y](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y)
+
 ## JSX ARIA Support
 
 React supports all ARIA attributes natively in JSX. Unlike most React DOM properties which are camelCase, ARIA attributes use hyphen-case exactly as in HTML:

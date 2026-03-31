@@ -303,3 +303,49 @@ When the audit is for a project that also uses the LLMCompliance evidence collec
 | Incident reporting UI | T13 Incident Management | Reporting interfaces must be accessible |
 | Content labeling | T03 Content Labeling | AI content labels must be perceivable by assistive tech |
 | Risk dashboards | T06 Impact/Risk Assessment | Assessment tools used by compliance teams must be accessible |
+
+## Important: Data Handling
+
+When running an audit, be aware that:
+- Users may share **proprietary source code** — audit reports will contain code snippets from the audited project
+- Generated reports may reveal **architectural patterns and security-sensitive implementation details**
+- Advise users to **review audit reports before sharing** them publicly or committing to open repositories
+- This skill **analyzes code but never executes it** — all assessment is static analysis and pattern matching against known accessibility anti-patterns
+
+## Detection Limitations
+
+This skill cannot fully assess all WCAG 2.2 criteria from source code alone. The following require live testing or human judgment that static analysis cannot replace:
+
+| What This Skill CAN Detect | What Requires Live/Manual Testing |
+|---------------------------|----------------------------------|
+| Missing `alt` attributes | Whether `alt` text is *meaningful* (not just present) |
+| Missing `aria-label`/`aria-labelledby` | Whether labels make sense in context |
+| Missing landmark roles | Whether landmark structure is *logical* |
+| `outline: none` without replacement | Actual contrast ratios of focus indicators |
+| Missing `lang` attribute | Correct language identification for multilingual content |
+| Click handlers without keyboard handlers | Actual keyboard navigation flow and tab order |
+| Missing `aria-live` regions | Whether live region announcements are *useful* and not noisy |
+| Heading level skips | Whether heading hierarchy makes semantic sense |
+| Missing `autocomplete` attributes | N/A — fully detectable from code |
+| Color values in CSS | Precise contrast ratio calculation (needs computed styles) |
+| Missing `prefers-reduced-motion` | Whether animations are actually distracting |
+| Double-click / hover-only interactions | Touch target sizes on actual rendered layout |
+
+**Always recommend live testing** (keyboard walkthrough, screen reader testing with NVDA/VoiceOver, contrast analyzer, zoom testing) alongside this code-level audit. The Testing Methodology checklist in the report template covers these manual checks.
+
+## Standards Versions
+
+This skill targets the following standard versions (last verified 2026-03-31):
+
+| Standard | Version | Date |
+|----------|---------|------|
+| WCAG | 2.2 | W3C Recommendation, Oct 2023 |
+| WAI-ARIA APG | 1.2 | W3C Note, ongoing updates |
+| Angular CDK A11y | 17+ | Angular v17-v19 compatible |
+| React Aria | 3.x | Adobe, React 18+ compatible |
+| Radix UI | 1.x | Radix Primitives |
+| eslint-plugin-jsx-a11y | 6.x | npm |
+| @angular-eslint | 17+ | npm |
+| axe-core | 4.x | Deque Systems |
+| Section 508 | Revised 2018 | US Access Board |
+| European Accessibility Act | Directive 2019/882 | Enforcement from June 2025 |
