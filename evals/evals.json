@@ -1,0 +1,63 @@
+{
+  "skill_name": "accessibility-audit",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "hey can you run a WCAG audit on this vanilla JS wizard framework? it's in tools/interactive/shared.js — it creates multi-step forms with toggles, progress dots, and a toolbar. Here's the key code:\n\n```javascript\nfunction createToggle(options, container) {\n  var wrapper = el('div', { className: 'toggle-group' });\n  options.forEach(function(opt) {\n    var btn = el('button', { className: 'toggle-btn', textContent: opt.label });\n    btn.onclick = function() {\n      wrapper.querySelectorAll('.toggle-btn').forEach(function(b) { b.classList.remove('active'); });\n      btn.classList.add('active');\n      opt.onSelect(opt.value);\n    };\n    wrapper.appendChild(btn);\n  });\n  container.appendChild(wrapper);\n}\n\nfunction updateProgress(currentStep, totalSteps, container) {\n  container.innerHTML = '';\n  for (var i = 0; i < totalSteps; i++) {\n    var dot = el('span', { className: 'progress-dot' + (i === currentStep ? ' active' : '') });\n    container.appendChild(dot);\n  }\n}\n\nfunction refreshStep(stepIndex) {\n  _stepContainer.innerHTML = '';\n  var stepFn = _steps[stepIndex];\n  stepFn(_stepContainer);\n}\n```\n\nThe CSS uses `outline: none` on buttons and toggle states are shown only via background color (teal = selected, gray = unselected). No skip links, no landmarks, no aria-live regions anywhere.",
+      "expected_output": "A structured accessibility audit report in markdown with severity-classified findings (CRITICAL/HIGH/MEDIUM/LOW), WCAG criterion references, concrete JS remediation code, and a full WCAG 2.2 criterion checklist",
+      "files": [],
+      "expectations": [
+        "Report contains an Executive Summary section with a findings count table by severity",
+        "Toggle buttons are flagged as CRITICAL or HIGH for missing keyboard operability (WCAG 2.1.1)",
+        "Toggle buttons are flagged for missing aria-pressed attribute",
+        "Progress dots are flagged for being purely visual with no accessible state (WCAG 1.3.1)",
+        "Step changes via refreshStep() are flagged for not being announced to screen readers (WCAG 4.1.3)",
+        "Missing focus indicators (outline:none) are flagged as HIGH (WCAG 2.4.7)",
+        "Missing skip navigation is flagged (WCAG 2.4.1)",
+        "Missing ARIA landmarks are flagged (WCAG 1.3.1)",
+        "Color-only state indication on toggles is flagged (WCAG 1.4.1)",
+        "Each finding includes concrete remediation code, not just a description",
+        "Report includes a WCAG 2.2 criterion checklist with PASS/FAIL/N-A for each criterion",
+        "Report includes a Remediation Roadmap table prioritized by severity",
+        "Findings are organized by severity tier (CRITICAL first, then HIGH, MEDIUM, LOW)",
+        "Report is saved as a markdown file"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I need an accessibility check on our React dashboard. It's a SPA built with react-router-dom v6 and we're using custom components (no component library). Here's a snippet of our main layout and a modal:\n\n```jsx\nfunction DashboardLayout({ children }) {\n  return (\n    <div className=\"layout\">\n      <div className=\"sidebar\">\n        <div onClick={() => navigate('/home')}>Home</div>\n        <div onClick={() => navigate('/reports')}>Reports</div>\n        <div onClick={() => navigate('/settings')}>Settings</div>\n      </div>\n      <div className=\"main-content\">{children}</div>\n    </div>\n  );\n}\n\nfunction ConfirmModal({ isOpen, onConfirm, onCancel, message }) {\n  if (!isOpen) return null;\n  return (\n    <div className=\"modal-overlay\" onClick={onCancel}>\n      <div className=\"modal-box\" onClick={e => e.stopPropagation()}>\n        <p>{message}</p>\n        <button onClick={onConfirm}>Yes</button>\n        <button onClick={onCancel}>No</button>\n      </div>\n    </div>\n  );\n}\n```\n\nNo focus management on route changes, no aria-live announcements. The sidebar nav uses divs with onClick instead of links or buttons. The modal has no focus trap.",
+      "expected_output": "Accessibility audit report with React-specific findings including SPA focus management, div-onClick anti-pattern, missing focus trap in modal, and recommendations for React Aria or Radix UI",
+      "files": [],
+      "expectations": [
+        "Navigation div-onClick elements are flagged as CRITICAL for not being keyboard accessible (WCAG 2.1.1)",
+        "Missing SPA route change focus management is flagged (unique to React SPAs)",
+        "Modal missing focus trap is flagged as CRITICAL or HIGH (WCAG 2.4.3 / 2.1.2)",
+        "Modal missing aria-modal, role=dialog, and accessible name is flagged",
+        "Report recommends React-specific solutions (React Aria hooks, Radix UI, or useRef/useEffect patterns)",
+        "Report includes useFocusOnRouteChange or equivalent focus management pattern",
+        "Sidebar nav missing semantic elements (should use nav, a, or button) is flagged",
+        "Missing ARIA landmarks in layout is flagged (no main, nav, header)",
+        "Each finding includes JSX remediation code",
+        "Report includes the WCAG 2.2 criterion checklist"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "can you do an a11y audit of this Angular component? it's a data table with sortable columns and inline editing. We're using Angular 17 with standalone components but NOT using Angular Material.\n\n```typescript\n@Component({\n  selector: 'app-data-table',\n  standalone: true,\n  template: `\n    <div class=\"table-container\">\n      <div class=\"search-bar\">\n        <input placeholder=\"Search...\" (input)=\"onSearch($event)\">\n      </div>\n      <table>\n        <tr>\n          <th *ngFor=\"let col of columns\" (click)=\"sort(col)\">\n            {{ col.label }} {{ sortColumn === col.key ? (sortDir === 'asc' ? '▲' : '▼') : '' }}\n          </th>\n        </tr>\n        <tr *ngFor=\"let row of filteredRows\">\n          <td *ngFor=\"let col of columns\" (dblclick)=\"startEdit(row, col)\">\n            <span *ngIf=\"!isEditing(row, col)\">{{ row[col.key] }}</span>\n            <input *ngIf=\"isEditing(row, col)\" [(ngModel)]=\"row[col.key]\" (blur)=\"stopEdit()\">\n          </td>\n        </tr>\n      </table>\n      <div class=\"status-bar\">Showing {{ filteredRows.length }} of {{ rows.length }} results</div>\n    </div>\n  `\n})\n```\n\nSort indicators are unicode arrows only. Inline edit triggers on double-click with no keyboard equivalent. Search input has no label. Status bar updates silently.",
+      "expected_output": "Audit report with Angular-specific findings including missing label associations, double-click-only editing, sort indicators, and recommendations for Angular CDK A11y (LiveAnnouncer, FocusMonitor)",
+      "files": [],
+      "expectations": [
+        "Search input missing label/aria-label is flagged (WCAG 1.3.1 or 3.3.2)",
+        "Sortable column headers using (click) on th without keyboard handler is flagged",
+        "Sort direction indicated only by unicode arrows (visual-only) is flagged (WCAG 1.3.1)",
+        "Double-click-only inline editing is flagged as CRITICAL or HIGH for no keyboard equivalent (WCAG 2.1.1)",
+        "Status bar not announced to screen readers is flagged — should use aria-live or LiveAnnouncer (WCAG 4.1.3)",
+        "Report recommends Angular CDK A11y patterns (LiveAnnouncer, FocusMonitor)",
+        "Table missing scope attributes on th elements is flagged",
+        "Each finding includes Angular template/TypeScript remediation code",
+        "Report includes the WCAG 2.2 criterion checklist",
+        "Findings use the severity classification system (CRITICAL/HIGH/MEDIUM/LOW)"
+      ]
+    }
+  ]
+}
