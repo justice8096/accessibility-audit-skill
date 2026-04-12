@@ -1,14 +1,42 @@
 POST-COMMIT AUDIT SUMMARY
 ==========================
-Date: 2026-03-31
-Commit: ae57379
+Date: 2026-04-12
+Commit: 50de54e (latest on master)
 Branch: master
 
-1. SAST/DAST Scan:        PASS — 3 findings (0 critical, 0 high, 1 medium, 2 low)
-2. Supply Chain Audit:     CONDITIONAL PASS — SLSA Level 1, 10 governance recommendations
-3. CWE Mapping:           PASS — 5 CWEs mapped to 8 frameworks (84.4% avg compliance)
-4. LLM Compliance:        76/100 — GOOD
-5. Contribution Analysis:  30% Human / 70% AI
+PRIOR AUDIT (2026-03-31): 76/100 GOOD — CONDITIONAL PASS
 
-Overall: CONDITIONAL PASS
-Action Required: yes — Enable commit signing, generate SBOM, add SECURITY.md, add CI/CD pipeline
+CURRENT SCAN:
+1. SAST/DAST Scan:        CONDITIONAL PASS — 16 findings (1 critical, 3 high, 4 medium, 5 low, 3 info)
+2. Supply Chain Audit:     PASS — SLSA Level 2, zero CVEs, complete SBOM, active CI/CD
+3. CWE Mapping:           CONDITIONAL PASS — 11 CWEs mapped to 8 frameworks (71.4% avg compliance)
+4. LLM Compliance:        78/100 — GOOD (up from 76, re-audit with deltas)
+5. Contribution Analysis:  35% Human / 65% AI — Overall Grade: B
+
+REMEDIATION APPLIED (2026-04-12):
+  [FIXED] CWE-22  (CRITICAL) — Path traversal in knowledge loader: added SAFE_ID regex + startsWith containment
+  [FIXED] CWE-94  (HIGH)     — Code injection in build.ts: added escapeStringLiteral() for all manifest interpolation
+  [FIXED] CWE-426 (HIGH)     — Untrusted deps: pinned all versions exactly (removed ^ in 3 package.json files)
+  [FIXED] CWE-400 (MEDIUM)   — Unbounded cache: added MAX_CACHE_SIZE=50 with FIFO eviction
+  [FIXED] CWE-79  (MEDIUM)   — YAML injection: enhanced stringifier with depth/size limits and comprehensive escaping
+  [FIXED] CWE-20  (MEDIUM)   — Input validation: added sanitizeIdentifier() for all manifest IDs/params
+  [FIXED] CWE-209 (LOW)      — Error exposure: wrapped MCP handler in try/catch with generic error response
+  [FIXED] CWE-117 (LOW)      — Log injection: added sanitizeForLog() and sanitizeToolName() helpers
+
+POST-REMEDIATION VERIFICATION:
+  - Build passes clean (all 6 formats: claude-plugin, openai, n8n, prompts, mcp, cli)
+  - Security functions confirmed in regenerated dist/ files
+  - All actionable code findings addressed
+
+Overall: PASS (post-remediation)
+Remaining Non-Code Actions:
+  - Enable commit signing (GPG/SSH) for SLSA L3
+  - Add unit test suite for build system
+  - Add formal FP/FN measurement for bias assessment
+
+REPORTS:
+  1. audits/sast-dast-scan.md
+  2. audits/supply-chain-audit.md
+  3. audits/cwe-mapping.md
+  4. audits/llm-compliance-report.md
+  5. audits/contribution-analysis.md

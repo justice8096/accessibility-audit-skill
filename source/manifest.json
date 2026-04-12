@@ -1,0 +1,103 @@
+{
+  "metadata": {
+    "name": "Accessibility Audit",
+    "version": "1.0.0",
+    "description": "Run comprehensive WCAG 2.2 accessibility audits with severity-based findings, evidence collection, remediation guidance, and framework-specific fixes for Angular and React",
+    "author": "Justice",
+    "license": "MIT",
+    "repository": "https://github.com/justice8096/accessibility-audit-skill",
+    "keywords": ["accessibility", "WCAG", "a11y", "audit", "Section 508", "ADA", "EAA", "screen reader", "keyboard navigation", "ARIA"]
+  },
+  "skills": [
+    {
+      "name": "accessibility-audit",
+      "displayName": "Accessibility Audit",
+      "description": "Comprehensive WCAG 2.2 Level AA accessibility auditing with 4-phase process: automated extraction, framework-specific checks, manual/human-judgment checks, and report generation",
+      "path": "skills/accessibility-audit.md",
+      "keywords": ["WCAG", "accessibility", "a11y", "audit", "screen reader", "keyboard", "ARIA", "Section 508"]
+    }
+  ],
+  "commands": [
+    {
+      "name": "accessibility-audit",
+      "displayName": "Run Accessibility Audit",
+      "description": "Run a full WCAG 2.2 Level AA accessibility audit with severity-classified findings, CWE mapping, and remediation roadmap",
+      "path": "commands/accessibility-audit.md",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "target": {
+            "type": "string",
+            "description": "Path to the file, component, or URL to audit"
+          },
+          "framework": {
+            "type": "string",
+            "description": "Frontend framework in use: vanilla, angular, or react",
+            "default": "vanilla"
+          },
+          "severity_threshold": {
+            "type": "string",
+            "description": "Minimum severity level to include in report: CRITICAL, HIGH, MEDIUM, or LOW",
+            "default": "LOW"
+          },
+          "include_checklist": {
+            "type": "boolean",
+            "description": "Include full WCAG 2.2 criterion checklist in report",
+            "default": true
+          }
+        },
+        "required": ["target"]
+      },
+      "keywords": ["audit", "WCAG", "accessibility", "scan", "check"]
+    },
+    {
+      "name": "framework-accessibility-check",
+      "displayName": "Framework Accessibility Check",
+      "description": "Run framework-specific accessibility checks for Angular CDK A11y or React Aria patterns with targeted remediation guidance",
+      "path": "commands/framework-accessibility-check.md",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "target": {
+            "type": "string",
+            "description": "Path to the component or module to check"
+          },
+          "framework": {
+            "type": "string",
+            "description": "Framework to check: angular or react"
+          }
+        },
+        "required": ["target", "framework"]
+      },
+      "keywords": ["angular", "react", "framework", "CDK", "React Aria", "Radix"]
+    },
+    {
+      "name": "generate-remediation-roadmap",
+      "displayName": "Generate Remediation Roadmap",
+      "description": "Generate a prioritized remediation roadmap from audit findings with effort estimates, quick wins, and compliance impact",
+      "path": "commands/generate-remediation-roadmap.md",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "findings_path": {
+            "type": "string",
+            "description": "Path to the audit findings file or report"
+          },
+          "sprint_capacity": {
+            "type": "string",
+            "description": "Available developer hours per sprint for remediation",
+            "default": "40"
+          },
+          "compliance_target": {
+            "type": "string",
+            "description": "Target compliance standard: WCAG-AA, Section-508, or EAA",
+            "default": "WCAG-AA"
+          }
+        },
+        "required": ["findings_path"]
+      },
+      "keywords": ["remediation", "roadmap", "fix", "prioritize", "compliance"]
+    }
+  ],
+  "templates": []
+}
